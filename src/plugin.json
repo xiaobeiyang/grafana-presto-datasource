@@ -1,0 +1,32 @@
+{
+  "type": "datasource",
+  "name": "grafana-presto-datasource",
+  "id": "grafana-presto-datasource",
+  "metrics": true,
+  "backend": true,
+  "executable": "grafana-presto-datasource",
+  "info": {
+    "description": "Grafana Presto datasource plugin.",
+    "author": {
+      "name": "xiaobeiyang",
+      "url": "https://github.com/xiaobeiyang/grafana-presto-datasource"
+    },
+    "keywords": [
+      "Grafana",
+      "Presto",
+      "Datasource"
+    ],
+    "logos": {
+      "small": "img/presto.png",
+      "large": "img/presto.png"
+    },
+    "links": [],
+    "screenshots": [],
+    "version": "%VERSION%",
+    "updated": "%TODAY%"
+  },
+  "dependencies": {
+    "grafanaVersion": "8.x.x",
+    "plugins": []
+  }
+}

@@ -1,0 +1,8 @@
+node_modules
+dist
+grafana-presto-datasource
+grafana-presto-datasource_*
+grafana-presto-datasource.tar.gz
+vendor
+*DS_Store
+.vscode

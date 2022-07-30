@@ -1,0 +1,29 @@
+{
+  "name": "grafana-presto-datasource",
+  "version": "0.9.0",
+  "description": "A backend datasource for Presto",
+  "scripts": {
+    "build": "grafana-toolkit plugin:build",
+    "test": "grafana-toolkit plugin:test",
+    "dev": "grafana-toolkit plugin:dev",
+    "watch": "grafana-toolkit plugin:dev --watch"
+  },
+  "author": "xiaobeiyang",
+  "license": "Apache-2.0",
+  "devDependencies": {
+    "@grafana/data": "8.2.2",
+    "@grafana/runtime": "8.2.2",
+    "@grafana/toolkit": "8.2.2",
+    "@grafana/ui": "8.2.2",
+    "@types/lodash": "latest"
+  },
+  "engines": {
+    "node": ">=12"
+  },
+  "dependencies": {
+    "ace-builds": "^1.4.12",
+    "react-ace": "^9.1.4",
+    "rxjs": "7.3.0",
+    "tslib": "^2.4.0"
+  }
+}
