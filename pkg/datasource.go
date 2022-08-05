@@ -34,6 +34,7 @@ type DatasourceSettings struct {
 }
 
 type PrestoParam struct {
+	HTTPScheme   string
 	Host         string
 	Catalog      string
 	Schema       string
@@ -68,7 +69,8 @@ func NewDatasourceInstance(settings backend.DataSourceInstanceSettings) (instanc
 	if dsSettings.PrestoParam.QueryMaxExecutionSeconds <= 0 {
 		dsSettings.PrestoParam.QueryMaxExecutionSeconds = 60
 	}
-	prestoGatewayURL := fmt.Sprintf("https://%s@%s?catalog=%s&schema=%s&custom_client=%s&session_properties=query_max_execution_time=%ds",
+	dsn := fmt.Sprintf("%s://%s@%s?catalog=%s&schema=%s&custom_client=%s&session_properties=query_max_execution_time=%ds",
+		dsSettings.PrestoParam.HTTPScheme,
 		dsSettings.Instance.BasicAuthUser,
 		dsSettings.PrestoParam.Host,
 		dsSettings.PrestoParam.Catalog,
@@ -81,14 +83,14 @@ func NewDatasourceInstance(settings backend.DataSourceInstanceSettings) (instanc
 		params.Add(param.Name, param.Value)
 	}
 	if len(params) > 0 {
-		prestoGatewayURL = prestoGatewayURL + "&" + params.Encode()
+		dsn = dsn + "&" + params.Encode()
 	}
-	db, err := sql.Open("presto", prestoGatewayURL)
+	db, err := sql.Open("presto", dsn)
 	if err != nil {
 		return nil, err
 	}
 	presto.RegisterCustomClient(dsSettings.Instance.Name, &http.Client{})
-	backend.Logger.Info("Create datasource.", "datasource", dsSettings.Instance.Name, "url", prestoGatewayURL)
+	backend.Logger.Info("Create datasource.", "datasource", dsSettings.Instance.Name, "url", dsn)
 	return &PrestoDatasource{
 		settings: &dsSettings,
 		db:       db,
@@ -186,12 +188,6 @@ func (ds *PrestoDatasource) queryData(query backend.DataQuery, wg *sync.WaitGrou
 		return
 	}
 
-	columnTypes, _ := rows.ColumnTypes()
-	databaseTypeNames := make([]string, 0, len(columnTypes))
-	for _, typ := range columnTypes {
-		databaseTypeNames = append(databaseTypeNames, typ.DatabaseTypeName())
-	}
-	backend.Logger.Info("Query result.", "databaseTypeNames", databaseTypeNames)
 	// Convert row.Rows to dataframe
 	frame, err := sqlutil.FrameFromRows(rows, ds.settings.PrestoParam.RowLimit, Converters()...)
 	if err != nil {

@@ -9,7 +9,7 @@ dep:
 	go mod vendor
 	yarn install
 
-binary:
+build-go:
 	cd pkg && GOOS=linux && GOARCH=amd64 && go build -ldflags $(VER) -v -o grafana-presto-datasource_linux_amd64
 	cd pkg && GOOS=linux && GOARCH=arm64 && go build -ldflags $(VER) -v -o grafana-presto-datasource_linux_arm64
 	cd pkg && GOOS=darwin && GOARCH=amd64 && go build -ldflags $(VER) -v -o grafana-presto-datasource_darwin_amd64
@@ -19,6 +19,8 @@ build-js:
 	yarn build
 
 package:
-	rm -rf grafana-presto-datasource && rm grafana-presto-datasource.tar.gz && mkdir grafana-presto-datasource
+	rm -rf grafana-presto-datasource
+	rm grafana-presto-datasource.tar.gz
+	mkdir grafana-presto-datasource
 	cp -r dist grafana-presto-datasource/ && cp pkg/grafana-presto-datasource_* grafana-presto-datasource/dist/
 	tar vfcz grafana-presto-datasource.tar.gz grafana-presto-datasource

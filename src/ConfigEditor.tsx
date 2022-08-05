@@ -9,6 +9,14 @@ interface Props extends DataSourcePluginOptionsEditorProps<PrestoDataSourceOptio
 interface State {}
 
 export class ConfigEditor extends PureComponent<Props, State> {
+  onHTTPSchemeChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const { onOptionsChange, options } = this.props;
+    const jsonData = {
+      ...options.jsonData,
+      httpScheme: event.target.value,
+    };
+    onOptionsChange({ ...options, jsonData });
+  };
   onHostChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { onOptionsChange, options } = this.props;
     const jsonData = {
@@ -34,13 +42,9 @@ export class ConfigEditor extends PureComponent<Props, State> {
     };
     onOptionsChange({ ...options, jsonData });
   };
-  onClientTagsChange = (event: ChangeEvent<HTMLInputElement>) => {
+  onUserChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { onOptionsChange, options } = this.props;
-    const jsonData = {
-      ...options.jsonData,
-      clientTags: event.target.value,
-    };
-    onOptionsChange({ ...options, jsonData });
+    onOptionsChange({ ...options, basicAuthUser: event.currentTarget.value });
   };
   onQueryMaxExecutionSecondsChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { onOptionsChange, options } = this.props;
@@ -87,12 +91,32 @@ export class ConfigEditor extends PureComponent<Props, State> {
       <div className="gf-form-group">
         <div className="gf-form">
           <FormField
+            label="HTTP Scheme"
+            labelWidth={10}
+            inputWidth={30}
+            onChange={this.onHTTPSchemeChange}
+            value={jsonData.httpScheme || ''}
+            placeholder="https or http"
+          />
+        </div>
+        <div className="gf-form">
+          <FormField
             label="Presto host"
             labelWidth={10}
             inputWidth={30}
             onChange={this.onHostChange}
             value={jsonData.host || ''}
             placeholder="Presto cluster host"
+          />
+        </div>
+        <div className="gf-form">
+          <FormField
+            label="User"
+            labelWidth={10}
+            inputWidth={30}
+            onChange={this.onUserChange}
+            value={options.basicAuthUser}
+            placeholder="user"
           />
         </div>
         <div className="gf-form">
@@ -145,7 +169,7 @@ export class ConfigEditor extends PureComponent<Props, State> {
             inputWidth={30}
             onChange={this.onResultRowLimitChange}
             value={jsonData.resultRowLimit}
-            placeholder="100000"
+            placeholder="max result rows, default is 0(no limit)."
           />
         </div>
         <div>

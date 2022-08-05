@@ -17,6 +17,7 @@ export const defaultQuery: Partial<PrestoQuery> = {
  * These are options configured for each DataSource instance
  */
 export interface PrestoDataSourceOptions extends DataSourceJsonData {
+  httpScheme?: string;
   host?: string;
   catalog?: string;
   schema?: string;
