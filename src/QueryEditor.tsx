@@ -3,13 +3,14 @@ import defaults from 'lodash/defaults';
 import React, { PureComponent } from 'react';
 import { QueryEditorProps, SelectableValue } from '@grafana/data';
 import { Select, InlineFormLabel } from '@grafana/ui';
+import { config } from '@grafana/runtime';
 import { DataSource, migrateQuery, FORMAT_TABLE, FORMAT_TIME_SERIES } from './DataSource';
 import { defaultQuery, PrestoDataSourceOptions, PrestoQuery } from './types';
 
 import AceEditor from 'react-ace';
-import 'ace-builds/src-min-noconflict/ext-language_tools';
-import 'ace-builds/src-noconflict/mode-mysql';
-import 'ace-builds/src-noconflict/theme-terminal';
+require('./theme-grafana8-dark');
+require('brace/mode/mysql');
+require('brace/theme/textmate');
 
 type Props = QueryEditorProps<DataSource, PrestoQuery, PrestoDataSourceOptions>;
 
@@ -50,6 +51,7 @@ export class QueryEditor extends PureComponent<Props> {
           <AceEditor
             placeholder=""
             mode="mysql"
+            theme={config.theme.isDark ? 'grafana8-dark' : 'textmate'}
             name="qEditor"
             onChange={this.onQueryChange}
             onBlur={this.onQueryBlur}

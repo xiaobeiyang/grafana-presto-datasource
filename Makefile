@@ -19,8 +19,8 @@ build-js:
 	yarn build
 
 package:
-	rm -rf grafana-presto-datasource
-	rm grafana-presto-datasource.tar.gz
+	- rm -rf grafana-presto-datasource
+	- rm grafana-presto-datasource.tar.gz
 	mkdir grafana-presto-datasource
 	cp -r dist grafana-presto-datasource/ && cp pkg/grafana-presto-datasource_* grafana-presto-datasource/dist/
 	tar vfcz grafana-presto-datasource.tar.gz grafana-presto-datasource

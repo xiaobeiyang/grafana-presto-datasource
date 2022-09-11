@@ -21,8 +21,8 @@
     "node": ">=12"
   },
   "dependencies": {
-    "ace-builds": "^1.4.12",
-    "react-ace": "^9.1.4",
+    "brace": "0.11.1",
+    "react-ace": "7.0.5",
     "rxjs": "7.3.0",
     "tslib": "^2.4.0"
   }
